@@ -274,6 +274,7 @@ DEPENDENCIES
   annotate
   bootsnap (>= 1.4.2)
   byebug
+  devise
   devise_token_auth
   factory_bot_rails
   faker
