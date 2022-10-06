@@ -8,5 +8,5 @@
 # User.create!(
 #   name: 'test-user1',
 #   email: 'test-user1@test.com',
-#   password: 'password1'
+#   password: 'AAAAAAAA'  #userのvalidの関係で最低６文字の制限があるみたい。なお、数字のみでも通るみたい
 # )

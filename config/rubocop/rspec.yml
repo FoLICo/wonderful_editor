@@ -60,3 +60,8 @@ RSpec/NestedGroups:
 # ブロックの方が見た目がスッキリして見やすいので、どちらでもお好きにどうぞ。
 RSpec/ReturnFromStub:
   Enabled: false
+
+# 期待値オーバーはご愛嬌
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/models/*.rb"
