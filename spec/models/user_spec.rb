@@ -23,7 +23,7 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe User, type: :model do
   context "name を指定しているとき" do
@@ -31,7 +31,6 @@ RSpec.describe User, type: :model do
       user = FactoryBot.build(:user)
       # expect(user.valid?).to eq true
       expect(user).to be_valid
-
     end
   end
 
@@ -46,7 +45,8 @@ RSpec.describe User, type: :model do
   end
 
   context "すでに同じ名前の name が存在しているとき" do
-    before { create(:user, name: "aaa")}
+    before { create(:user, name: "aaa") }
+
     it "ユーザー作成に失敗する" do
       user = FactoryBot.build(:user, name: "aaa")
       expect(user).to be_invalid
@@ -54,5 +54,4 @@ RSpec.describe User, type: :model do
       expect(user.errors.details[:name][0][:error]).to eq :taken
     end
   end
-
 end
