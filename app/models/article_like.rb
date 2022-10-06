@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_article_likes_on_article_id  (article_id)
-#  index_article_likes_on_user_id     (user_id)
+#  index_article_likes_on_article_id              (article_id)
+#  index_article_likes_on_article_id_and_user_id  (article_id,user_id) UNIQUE
+#  index_article_likes_on_user_id                 (user_id)
 #
 # Foreign Keys
 #
@@ -19,6 +20,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class ArticleLike < ApplicationRecord
+  validates :article_id, uniqueness: { scope: :user_id }
   belongs_to :user
   belongs_to :article
 end

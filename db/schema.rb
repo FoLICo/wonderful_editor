@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_05_062851) do
+ActiveRecord::Schema.define(version: 2022_10_06_005056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2022_10_05_062851) do
     t.bigint "article_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id", "user_id"], name: "index_article_likes_on_article_id_and_user_id", unique: true
     t.index ["article_id"], name: "index_article_likes_on_article_id"
     t.index ["user_id"], name: "index_article_likes_on_user_id"
   end
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 2022_10_05_062851) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
