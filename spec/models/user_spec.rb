@@ -54,4 +54,20 @@ RSpec.describe User, type: :model do
       expect(user.errors.details[:name][0][:error]).to eq :taken
     end
   end
+
+  context "email がない場合" do
+    let(:user) { build(:user, email: nil) }
+
+    it "エラーが発生する" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "password がない場合" do
+    let(:user) { build(:user, password: nil) }
+
+    it "エラーが発生する" do
+      expect(user).to be_invalid
+    end
+  end
 end

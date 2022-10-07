@@ -22,5 +22,33 @@
 require "rails_helper"
 
 RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "body を指定しているとき" do
+    it "コメントが作られる" do
+      comment = FactoryBot.build(:comment)
+      expect(comment).to be_valid
+    end
+  end
+
+  context "body を指定していないとき" do
+    it "コメントの作成に失敗する" do
+      comment = FactoryBot.build(:comment, body: nil)
+      expect(comment).to be_invalid
+      expect(comment.errors.details[:body][0][:error]).to eq :blank
+    end
+  end
+
+  # context "bodyが70文字以下の時のとき" do
+  #   it "コメントの作成に成功する" do
+  #     comment = FactoryBot.create(:comment, body: "a"*70)
+  #     expect(comment).to be_valid
+  #   end
+  # end
+
+  context "bodyが70文字以上の時のとき" do
+    it "コメントの作成に失敗する" do
+      comment = FactoryBot.build(:comment, body: "a" * 71)
+      expect(comment).to be_invalid
+      expect(comment.errors.details[:body][0][:error]).to eq :too_long
+    end
+  end
 end

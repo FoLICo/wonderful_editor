@@ -51,3 +51,8 @@ Rails/UnknownEnv:
     - test # rubocop default.yml
     - production # rubocop default.yml
     - staging
+
+# article_idだけ、user_idだけ存在するなんて有り得ません。
+Rails/SaveBang:
+  Exclude:
+    - "spec/models/article_like_spec.rb"
