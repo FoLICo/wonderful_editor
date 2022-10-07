@@ -17,6 +17,28 @@
 #                                       DELETE /auth(.:format)                                                                          devise_token_auth/registrations#destroy
 #                                       POST   /auth(.:format)                                                                          devise_token_auth/registrations#create
 #                   auth_validate_token GET    /auth/validate_token(.:format)                                                           devise_token_auth/token_validations#validate_token
+#                       api_v1_articles GET    /api/v1/articles(.:format)                                                               api/v1/articles#index
+#                                       POST   /api/v1/articles(.:format)                                                               api/v1/articles#create
+#                        api_v1_article GET    /api/v1/articles/:id(.:format)                                                           api/v1/articles#show
+#                                       PATCH  /api/v1/articles/:id(.:format)                                                           api/v1/articles#update
+#                                       PUT    /api/v1/articles/:id(.:format)                                                           api/v1/articles#update
+#                                       DELETE /api/v1/articles/:id(.:format)                                                           api/v1/articles#destroy
+#               new_api_v1_user_session GET    /api/v1/auth/sign_in(.:format)                                                           devise_token_auth/sessions#new
+#                   api_v1_user_session POST   /api/v1/auth/sign_in(.:format)                                                           devise_token_auth/sessions#create
+#           destroy_api_v1_user_session DELETE /api/v1/auth/sign_out(.:format)                                                          devise_token_auth/sessions#destroy
+#              new_api_v1_user_password GET    /api/v1/auth/password/new(.:format)                                                      devise_token_auth/passwords#new
+#             edit_api_v1_user_password GET    /api/v1/auth/password/edit(.:format)                                                     devise_token_auth/passwords#edit
+#                  api_v1_user_password PATCH  /api/v1/auth/password(.:format)                                                          devise_token_auth/passwords#update
+#                                       PUT    /api/v1/auth/password(.:format)                                                          devise_token_auth/passwords#update
+#                                       POST   /api/v1/auth/password(.:format)                                                          devise_token_auth/passwords#create
+#       cancel_api_v1_user_registration GET    /api/v1/auth/cancel(.:format)                                                            devise_token_auth/registrations#cancel
+#          new_api_v1_user_registration GET    /api/v1/auth/sign_up(.:format)                                                           devise_token_auth/registrations#new
+#         edit_api_v1_user_registration GET    /api/v1/auth/edit(.:format)                                                              devise_token_auth/registrations#edit
+#              api_v1_user_registration PATCH  /api/v1/auth(.:format)                                                                   devise_token_auth/registrations#update
+#                                       PUT    /api/v1/auth(.:format)                                                                   devise_token_auth/registrations#update
+#                                       DELETE /api/v1/auth(.:format)                                                                   devise_token_auth/registrations#destroy
+#                                       POST   /api/v1/auth(.:format)                                                                   devise_token_auth/registrations#create
+#            api_v1_auth_validate_token GET    /api/v1/auth/validate_token(.:format)                                                    devise_token_auth/token_validations#validate_token
 #         rails_postmark_inbound_emails POST   /rails/action_mailbox/postmark/inbound_emails(.:format)                                  action_mailbox/ingresses/postmark/inbound_emails#create
 #            rails_relay_inbound_emails POST   /rails/action_mailbox/relay/inbound_emails(.:format)                                     action_mailbox/ingresses/relay/inbound_emails#create
 #         rails_sendgrid_inbound_emails POST   /rails/action_mailbox/sendgrid/inbound_emails(.:format)                                  action_mailbox/ingresses/sendgrid/inbound_emails#create
@@ -39,4 +61,12 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for "User", at: "auth"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  namespace :api do
+    namespace :v1 do
+      resources :articles
+      mount_devise_token_auth_for "User", at: "auth"
+
+      # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+    end
+  end
 end
