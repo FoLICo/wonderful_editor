@@ -1,4 +1,4 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :password
+  attributes :id, :name, :email, :password
   has_many :articles, dependent: :destroy
 end
