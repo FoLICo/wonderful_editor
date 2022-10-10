@@ -19,7 +19,7 @@
 #
 FactoryBot.define do
   factory :article do
-    title { "title" }
+    title { Faker::Lorem.word }
     body { Faker::Lorem.paragraph }
     association :user, factory: :user
   end
