@@ -73,3 +73,8 @@ RSpec/ScatteredSetup:
   Exclude:
     - "spec/requests/*.rb"
     - "spec/requests/api/v1/*.rb"
+
+#一旦無視しよとのこと
+RSpec/AnyInstance:
+  Exclude:
+    - "spec/requests/api/v1/*.rb"
