@@ -30,7 +30,6 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
       it "その記事のレコードが取得できる" do
         subject
-        # binding.pry
         res = JSON.parse(response.body)
         expect(res["title"]).to eq article.title
         expect(res["body"]).to eq article.body
@@ -46,6 +45,43 @@ RSpec.describe "Api::V1::Articles", type: :request do
       it "記事が見つからない" do
         # binding.pry
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound) # raiseなのに注意！　データが見つからないこと（＝エラーとなること）を期待している
+      end
+    end
+  end
+
+  describe "POST /articles" do
+    subject { post(api_v1_articles_path, params: params) }
+    # binding.pry
+
+    context "適切なパラメーターを送信したとき" do
+      let(:params) do
+        { article: FactoryBot.attributes_for(:article) }
+      end
+      # binding.pry
+      let(:current_user) { create(:user) } # ここで急に出てきてもわからないから次でこのcurrent_userを定義する
+
+      it "ユーザーのデータが作成できる" do
+        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) # A の class の中で B を呼び出したときに C がかえるよ
+        # binding.pry
+        # subject  #ここにsubjectがあるとchangeで変化を見られないからコメントアウト
+        # binding.pry
+        expect { subject }.to change { Article.count }.by(1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+        # binding.pry
+        res = JSON.parse(response.body)
+        expect(res["title"]).to eq params[:article][:title] # 上で送った値と、resとして返ってきている値が等しい
+        expect(res["body"]).to eq params[:article][:body]
+        expect(res["user"]["id"]).to eq current_user.id
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "不適切なパラメーターを送信したとき" do
+      let(:params) { FactoryBot.attributes_for(:article) }
+
+      it "ユーザーのデータが作成できない" do
+        # binding.pry
+        # subject
+        expect { subject }.to raise_error(ActionController::ParameterMissing) # raiseなのに注意！　うまく値を渡せないことを期待している
       end
     end
   end
