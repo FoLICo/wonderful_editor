@@ -31,6 +31,12 @@ module Api
         render json: article, serializer: Api::V1::ArticleSerializer
       end
 
+      def destroy
+        article = current_user.articles.find(params[:id])
+        article.destroy!
+        render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
+      end
+
       private
 
         def article_params
