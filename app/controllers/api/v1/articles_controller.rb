@@ -25,12 +25,24 @@ module Api
         render json: article, serializer: Api::V1::ArticleSerializer
       end
 
-      def article_params
-        # binding.pry
-        # params.require(:article).permit(:title, :body)  #.merge(user_id: current_user.id)
-        params.require(:article).permit(:title, :body).merge(user_id: current_user.id)
-        # binding.pry  #ここのpryは禁物
+      def update
+        article = current_user.articles.find(params[:id])
+        article.update!(update_params)
+        render json: article, serializer: Api::V1::ArticleSerializer
       end
+
+      private
+
+        def article_params
+          # binding.pry
+          # params.require(:article).permit(:title, :body)  #.merge(user_id: current_user.id)
+          params.require(:article).permit(:title, :body).merge(user_id: current_user.id)
+          # binding.pry  #ここのpryは禁物
+        end
+
+        def update_params
+          params.require(:article).permit(:title, :body)
+        end
     end
   end
 end

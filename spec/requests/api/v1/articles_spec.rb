@@ -60,7 +60,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       # binding.pry
       let(:current_user) { create(:user) } # ここで急に出てきてもわからないから次でこのcurrent_userを定義する
 
-      it "ユーザーのデータが作成できる" do
+      it "記事のデータが作成できる" do
         allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) # A の class の中で B を呼び出したときに C がかえるよ
         # binding.pry
         # subject  #ここにsubjectがあるとchangeで変化を見られないからコメントアウト
@@ -78,10 +78,52 @@ RSpec.describe "Api::V1::Articles", type: :request do
     context "不適切なパラメーターを送信したとき" do
       let(:params) { FactoryBot.attributes_for(:article) }
 
-      it "ユーザーのデータが作成できない" do
+      it "記事のデータが作成できない" do
         # binding.pry
         # subject
         expect { subject }.to raise_error(ActionController::ParameterMissing) # raiseなのに注意！　うまく値を渡せないことを期待している
+      end
+    end
+  end
+
+  describe "PATCH /articles/:id" do
+    subject { patch(api_v1_article_path(article_id), params: params) }
+
+    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+
+    let(:current_user) { create(:user) }
+
+    context "ログインユーザーが自身の投稿を更新しようとした時" do
+      let(:article_id) { article.id }
+      let(:article) { create(:article, user: current_user) }
+
+      let(:params) do
+        { article: { title: "fff", created_at: 1.day.ago } }
+      end
+
+      it "投稿内容を更新できる" do
+        expect { subject }.to change { Article.find(article_id).title }.from(article.title).to(params[:article][:title]) # Article.find(article_id)→article.reloadに書き換えられる
+        not_change { Article.find(article_id).body } &
+          not_change { Article.find(article_id).user_id } &
+          not_change { Article.find(article_id).created_at }
+        # binding.pry
+      end
+    end
+
+    context "ログインユーザーが他人の投稿を更新しようとした時" do
+      let(:other_user) { create(:user) }
+      let(:article_id) { article.id }
+      let!(:article) { create(:article, user: other_user) }
+
+      let(:params) do
+        { article: { title: "fff", created_at: 1.day.ago } }
+      end
+
+      it "投稿内容を更新できない" do
+        # binding.pry
+        # subject
+        # binding.pry
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
