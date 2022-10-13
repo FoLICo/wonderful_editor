@@ -59,9 +59,9 @@ RSpec.describe "Api::V1::Articles", type: :request do
       end
       # binding.pry
       let(:current_user) { create(:user) } # ここで急に出てきてもわからないから次でこのcurrent_userを定義する
+      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
 
       it "記事のデータが作成できる" do
-        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) # A の class の中で B を呼び出したときに C がかえるよ
         # binding.pry
         # subject  #ここにsubjectがあるとchangeで変化を見られないからコメントアウト
         # binding.pry
@@ -120,6 +120,38 @@ RSpec.describe "Api::V1::Articles", type: :request do
       end
 
       it "投稿内容を更新できない" do
+        # binding.pry
+        # subject
+        # binding.pry
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe "DELETE /articles/:id" do
+    subject { delete(api_v1_article_path(article_id)) }
+
+    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+
+    let(:current_user) { create(:user) }
+
+    context "ログインユーザーが自身の投稿を削除しようとした時" do
+      let(:article_id) { article.id }
+      let!(:article) { create(:article, user: current_user) }
+
+      it "投稿内容を削除できる" do
+        expect { subject }.to change { Article.count }.by(-1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+
+        # binding.pry
+      end
+    end
+
+    context "ログインユーザーが他人の投稿を削除しようとした時" do
+      let(:article_id) { article.id }
+      let!(:article) { create(:article, user: other_user) }
+      let(:other_user) { create(:user) }
+
+      it "投稿内容を削除できない" do
         # binding.pry
         # subject
         # binding.pry
