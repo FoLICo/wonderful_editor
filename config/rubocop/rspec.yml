@@ -67,6 +67,7 @@ RSpec/MultipleExpectations:
     - "spec/models/*.rb"
     - "spec/requests/*.rb"
     - "spec/requests/api/v1/*.rb"
+    - "spec/requests/api/v1/auth/*.rb"
 
 # 同じこともたまには書きたいやん
 RSpec/ScatteredSetup:
