@@ -47,10 +47,10 @@ DeviseTokenAuth.setup do |config|
   #                        :'expiry' => 'expiry',
   #                        :'uid' => 'uid',
   #                        :'token-type' => 'token-type' }
-  config.headers_names = { 'access-token': "access-token",
-                           client: "client",
-                           expiry: "expiry",
-                           uid: "uid",
+  config.headers_names = { 'access-token': "access-token", # 各リクエストのユーザーのパスワードとして機能するトークン
+                           client: "client",  # 異なるクライアントで複数のセッションを同時に使用することが可能になる
+                           expiry: "expiry",  # 現在のセッションが終了する日付
+                           uid: "uid", # ユーザーを識別するために使用される一意の値
                            authorization: "authorization",
                            'token-type': "token-type" }
 
