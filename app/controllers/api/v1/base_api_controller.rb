@@ -1,7 +1,5 @@
 class Api::V1::BaseApiController < ApplicationController
-  def current_user
-    @current_user ||= User.first
-    # ||の左側がtrueだったら右側は実行しない(if => false)
-    # ||の左側がfalse/nilだったら右側を実行する（if => true）
-  end
+  alias_method :current_user, :current_api_v1_user
+  alias_method :authenticate_user!, :authenticate_api_v1_user!
+  alias_method :user_signed_in?, :api_v1_user_signed_in?
 end
