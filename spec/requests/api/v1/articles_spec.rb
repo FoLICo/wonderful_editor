@@ -50,23 +50,22 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "POST /articles" do
-    subject { post(api_v1_articles_path, params: params) }
+    subject { post(api_v1_articles_path, params: params, headers: headers) }
+
     # binding.pry
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) } # ここで急に出てきてもわからないから次でこのcurrent_userを定義する
 
     context "適切なパラメーターを送信したとき" do
       let(:params) do
         { article: FactoryBot.attributes_for(:article) }
       end
-      # binding.pry
-      let(:current_user) { create(:user) } # ここで急に出てきてもわからないから次でこのcurrent_userを定義する
-      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
 
       it "記事のデータが作成できる" do
         # binding.pry
         # subject  #ここにsubjectがあるとchangeで変化を見られないからコメントアウト
         # binding.pry
         expect { subject }.to change { Article.count }.by(1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
-        # binding.pry
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title] # 上で送った値と、resとして返ってきている値が等しい
         expect(res["body"]).to eq params[:article][:body]
@@ -87,12 +86,10 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "PATCH /articles/:id" do
-    subject { patch(api_v1_article_path(article_id), params: params) }
-
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+    subject { patch(api_v1_article_path(article_id), params: params, headers: headers) }
 
     let(:current_user) { create(:user) }
-
+    let(:headers) { current_user.create_new_auth_token }
     context "ログインユーザーが自身の投稿を更新しようとした時" do
       let(:article_id) { article.id }
       let(:article) { create(:article, user: current_user) }
@@ -129,11 +126,10 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "DELETE /articles/:id" do
-    subject { delete(api_v1_article_path(article_id)) }
-
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+    subject { delete(api_v1_article_path(article_id), headers: headers) }
 
     let(:current_user) { create(:user) }
+    let(:headers) { current_user.create_new_auth_token }
 
     context "ログインユーザーが自身の投稿を削除しようとした時" do
       let(:article_id) { article.id }

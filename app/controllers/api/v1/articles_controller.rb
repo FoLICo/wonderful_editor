@@ -1,7 +1,7 @@
 module Api
   module V1
     class ArticlesController < BaseApiController
-      # before_action :current_user
+      before_action :authenticate_user!, only: [:create, :update, :destroy]
 
       def index
         articles = Article.all.order(updated_at: :desc)

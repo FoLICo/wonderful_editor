@@ -79,3 +79,8 @@ RSpec/ScatteredSetup:
 RSpec/AnyInstance:
   Exclude:
     - "spec/requests/api/v1/*.rb"
+
+# letオーバーはご愛嬌
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - "spec/requests/api/v1/*.rb"
