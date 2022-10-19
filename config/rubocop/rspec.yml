@@ -84,3 +84,8 @@ RSpec/AnyInstance:
 RSpec/MultipleMemoizedHelpers:
   Exclude:
     - "spec/requests/api/v1/*.rb"
+
+# コンテキスト多め
+RSpec/RepeatedExampleGroupDescription:
+  Exclude:
+    - "spec/models/*.rb"
