@@ -23,5 +23,6 @@ FactoryBot.define do
     title { Faker::Lorem.word }
     body { Faker::Lorem.paragraph }
     association :user, factory: :user
+    status { "draft" }
   end
 end
