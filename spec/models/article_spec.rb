@@ -47,7 +47,7 @@ RSpec.describe Article, type: :model do
 
   context "bodyとtitele を指定しているとき" do # 下書き用で保存できるか？
     it "下書き用で保存できる" do
-      article = FactoryBot.create(:article, status: "draft")
+      article = FactoryBot.create(:article)
       expect(article).to be_valid
       # binding.pry
       expect(article.status).to eq "draft"

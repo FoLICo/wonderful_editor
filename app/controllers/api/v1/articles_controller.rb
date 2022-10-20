@@ -5,15 +5,15 @@ module Api
 
       def index
         articles = Article.all.order(updated_at: :desc)
-        # 下記でserializerを使って出力できるようにする！
+        articles = articles.where(status: "published")
         render json: articles, each_serializer: Api::V1::ArticlePreviewSerializer
       end
 
       def show
-        # binding.pry
         article = Article.find(params[:id])
-        # 下記でserializerを使って出力できるようにする！
-        render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
+        if article.published?
+          render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
+        end
       end
 
       def create
@@ -42,12 +42,12 @@ module Api
         def article_params
           # binding.pry
           # params.require(:article).permit(:title, :body)  #.merge(user_id: current_user.id)
-          params.require(:article).permit(:title, :body).merge(user_id: current_user.id)
+          params.require(:article).permit(:title, :body, :status).merge(user_id: current_user.id)
           # binding.pry  #ここのpryは禁物
         end
 
         def update_params
-          params.require(:article).permit(:title, :body)
+          params.require(:article).permit(:title, :body, :status)
         end
     end
   end
