@@ -53,7 +53,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let(:article) { create(:article) } # これでuser.idが何かわかるようになる
 
       it "記事が見つからない" do
-        expect { subject }.to raise_error(ActionController::MissingExactTemplate) # raiseなのに注意！　データが見つからないこと（＝エラーとなること）を期待している
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound) # raiseなのに注意！　データが見つからないこと（＝エラーとなること）を期待している
       end
     end
   end

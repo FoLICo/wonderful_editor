@@ -68,12 +68,14 @@ RSpec/MultipleExpectations:
     - "spec/requests/*.rb"
     - "spec/requests/api/v1/*.rb"
     - "spec/requests/api/v1/auth/*.rb"
+    - "spec/requests/api/v1/articles/*.rb"
 
 # 同じこともたまには書きたいやん
 RSpec/ScatteredSetup:
   Exclude:
     - "spec/requests/*.rb"
     - "spec/requests/api/v1/*.rb"
+    - "spec/requests/api/v1/articles/*.rb"
 
 #一旦無視しよとのこと
 RSpec/AnyInstance:
