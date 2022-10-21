@@ -4,23 +4,19 @@ module Api
       before_action :authenticate_user!, only: [:create, :update, :destroy]
 
       def index
-        articles = Article.all.order(updated_at: :desc)
-        articles = articles.where(status: "published")
+        articles = Article.published.order(updated_at: :desc)
+        # articles = Article.all.order(updated_at: :desc)
+        # articles = articles.where(status: "published")
         render json: articles, each_serializer: Api::V1::ArticlePreviewSerializer
       end
 
       def show
-        article = Article.find(params[:id])
-        if article.published?
-          render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
-        end
+        article = Article.published.find(params[:id])
+        render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
       end
 
       def create
-        # binding.pry
-        # article = current_user.articles.new(article_params)
         article = Article.new(article_params)
-        # binding.pry
         article.save!
         render json: article, serializer: Api::V1::ArticleSerializer
       end
