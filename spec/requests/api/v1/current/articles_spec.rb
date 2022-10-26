@@ -20,8 +20,8 @@ RSpec.describe "Api::V1::Current::Articles", type: :request do
       expect(res[0].keys).to eq ["id", "title", "created_at", "updated_at", "status", "user"]
       expect(res[0]["user"].keys).to eq ["id", "name", "email", "password"]
       expect(res[0]["title"]).to eq "3"
-      expect(res[0]["status"]).to eq "published"  # 　公開用のみ表示
-      expect(res[0]["user"]["id"]).to eq current_user.id  # 　投稿はログインユーザーのもののみ
+      expect(res[0]["status"]).to eq "published"
+      expect(res[0]["user"]["id"]).to eq current_user.id
     end
   end
 end

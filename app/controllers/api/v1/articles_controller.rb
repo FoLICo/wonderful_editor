@@ -5,14 +5,12 @@ module Api
 
       def index
         articles = Article.published.order(updated_at: :desc)
-        # articles = Article.all.order(updated_at: :desc)
-        # articles = articles.where(status: "published")
         render json: articles, each_serializer: Api::V1::ArticlePreviewSerializer
       end
 
       def show
         article = Article.published.find(params[:id])
-        render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
+        render json: article, serializer: Api::V1::ArticleSerializer
       end
 
       def create
@@ -30,16 +28,13 @@ module Api
       def destroy
         article = current_user.articles.find(params[:id])
         article.destroy!
-        render json: article, serializer: Api::V1::ArticleSerializer # 出力するデータが配列ではない場合はeach_serializerではなく、serializerを設定
+        render json: article, serializer: Api::V1::ArticleSerializer
       end
 
       private
 
         def article_params
-          # binding.pry
-          # params.require(:article).permit(:title, :body)  #.merge(user_id: current_user.id)
           params.require(:article).permit(:title, :body, :status).merge(user_id: current_user.id)
-          # binding.pry  #ここのpryは禁物
         end
 
         def update_params

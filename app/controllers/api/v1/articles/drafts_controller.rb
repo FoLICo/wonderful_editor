@@ -5,8 +5,6 @@ module Api
 
       def index
         articles = current_user.articles.draft.order(updated_at: :desc)
-        # articles = Article.all.order(updated_at: :desc)
-        # articles = articles.where(status: "draft")
         render json: articles, each_serializer: Api::V1::ArticlePreviewSerializer
       end
 

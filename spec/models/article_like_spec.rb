@@ -22,18 +22,12 @@
 require "rails_helper"
 
 RSpec.describe ArticleLike, type: :model do
-  # validates :article_id, presence: true
-  # validates :user_id, presence: true
-
   context "article_idとuser_id を指定しているとき" do
-    # before { user = FactoryBot.create(:user) }
-    # before { article = FactoryBot.create(:article) }
     let(:user) { create(:user) }
     let(:article) { create(:article) }
 
     it "いいねができる" do
       article_like = ArticleLike.create!(user_id: user.id, article_id: article.id)
-      # binding.pry
       expect(article_like).to be_valid
     end
   end
@@ -44,7 +38,6 @@ RSpec.describe ArticleLike, type: :model do
 
     it "いいねができない" do
       article_like = ArticleLike.create(user_id: user.id, article_id: nil)
-      # binding.pry
       expect(article_like).to be_invalid
       expect(article_like.errors.details[:article][0][:error]).to eq :blank
       expect(article_like.errors.details[:article_id][0][:error]).to eq :blank
@@ -57,14 +50,12 @@ RSpec.describe ArticleLike, type: :model do
 
     it "いいねができない" do
       article_like = ArticleLike.create(user_id: nil, article_id: article.id)
-      # binding.pry
       expect(article_like).to be_invalid
       expect(article_like.errors.details[:user][0][:error]).to eq :blank
       expect(article_like.errors.details[:user_id][0][:error]).to eq :blank
     end
   end
 
-  # validates :article_id, uniqueness: { scope: :user_id }
   context "指定したarticle_idに既にuser_idがあるとき" do
     before { ArticleLike.create(user_id: user.id, article_id: article.id) }
 
@@ -72,7 +63,6 @@ RSpec.describe ArticleLike, type: :model do
     let(:article) { create(:article) }
     it "いいねができない" do
       subject = ArticleLike.create(user_id: user.id, article_id: article.id)
-      # binding.pry
       expect(subject).to be_invalid
       expect(subject.errors.details[:article_id][0][:error]).to eq :taken
     end
