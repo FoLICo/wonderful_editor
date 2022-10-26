@@ -5,8 +5,3 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-# User.create!(
-#   name: 'test-user1',
-#   email: 'test-user1@test.com',
-#   password: 'AAAAAAAA'  #userのvalidの関係で最低６文字の制限があるみたい。なお、数字のみでも通るみたい
-# )

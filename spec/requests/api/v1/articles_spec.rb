@@ -11,13 +11,13 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     it "公開用の記事の一覧を取得できる" do
       subject
-      expect(response).to have_http_status(:success) # 正常に通信できているか？
-      res = JSON.parse(response.body) # 一覧として帰ってきているデータ数が、beforeで作成したデータ数と一致するか？
+      expect(response).to have_http_status(:success)
+      res = JSON.parse(response.body)
       expect(res.length).to eq 3
-      expect(res[0].keys).to eq ["id", "title", "created_at", "updated_at", "status", "user"] # 一覧として帰ってきているデータの構成が、beforeで作成したデータと一致するか？
-      expect(res[0]["user"].keys).to eq ["id", "name", "email", "password"] # 一覧として帰ってきているデータのうち関連データとして存在するuserがちゃんとできていて、beforeで作成したデータと一致するか？
-      expect(res[0]["title"]).to eq "3" # コントローラのdesc→ascに書き換えたときにresに入る値の順番が入れ替わったので,その時点で表示の順番が入れ替わっている証拠になる
-      expect(res[0]["status"]).to eq "published" # 公開用のみ表示されているか
+      expect(res[0].keys).to eq ["id", "title", "created_at", "updated_at", "status", "user"]
+      expect(res[0]["user"].keys).to eq ["id", "name", "email", "password"]
+      expect(res[0]["title"]).to eq "3"
+      expect(res[0]["status"]).to eq "published"
     end
   end
 
@@ -25,8 +25,8 @@ RSpec.describe "Api::V1::Articles", type: :request do
     subject { get(api_v1_article_path(article_id)) }
 
     context "指定したidの公開用記事データが存在するとき" do
-      let(:article_id) { article.id } # ここで急に出てきてもわからないから次でこのuser.idを定義する
-      let(:article) { create(:article, status: "published") } # これでuser.idが何かわかるようになる
+      let(:article_id) { article.id }
+      let(:article) { create(:article, status: "published") }
 
       it "その記事のレコードが取得できる" do
         subject
@@ -42,18 +42,18 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
 
     context "指定したidの記事のデータが存在しないとき" do
-      let(:article_id) { 1_000_000 } # 存在しないものを書くので仮にFactryBotでつくられていたとしてもなかなか被ることがない数字を指定
+      let(:article_id) { 1_000_000 }
       it "記事が見つからない" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound) # raiseなのに注意！　データが見つからないこと（＝エラーとなること）を期待している
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context "指定したidが下書き用記事データだったとき" do
-      let(:article_id) { article.id } # ここで急に出てきてもわからないから次でこのuser.idを定義する
-      let(:article) { create(:article) } # これでuser.idが何かわかるようになる
+      let(:article_id) { article.id }
+      let(:article) { create(:article) }
 
       it "記事が見つからない" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound) # raiseなのに注意！　データが見つからないこと（＝エラーとなること）を期待している
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -66,18 +66,17 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     context "（下書き用の）適切なパラメーターを送信したとき" do
       let(:params) do
-        { article: FactoryBot.attributes_for(:article) } # デフォでdraftが指定されている
+        { article: FactoryBot.attributes_for(:article) }
       end
 
       it "(下書き用の)記事のデータが作成できる" do
-        # expect { subject }.to change { Article.count }.by(1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
-        expect { subject }.to change { Article.where(status: "draft").count }.by(1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+        expect { subject }.to change { Article.where(status: "draft").count }.by(1)
         res = JSON.parse(response.body)
-        expect(res["title"]).to eq params[:article][:title] # 上で送った値と、resとして返ってきている値が等しい
+        expect(res["title"]).to eq params[:article][:title]
         expect(res["body"]).to eq params[:article][:body]
         expect(res["user"]["id"]).to eq current_user.id
         expect(response).to have_http_status(:ok)
-        expect(res["status"]).to eq params[:article][:status] # 追加分
+        expect(res["status"]).to eq params[:article][:status]
       end
     end
 
@@ -87,13 +86,13 @@ RSpec.describe "Api::V1::Articles", type: :request do
       end
 
       it "(公開用の)記事のデータが作成できる" do
-        expect { subject }.to change { Article.where(status: "published").count }.by(1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+        expect { subject }.to change { Article.where(status: "published").count }.by(1)
         res = JSON.parse(response.body)
-        expect(res["title"]).to eq params[:article][:title] # 上で送った値と、resとして返ってきている値が等しい
+        expect(res["title"]).to eq params[:article][:title]
         expect(res["body"]).to eq params[:article][:body]
         expect(res["user"]["id"]).to eq current_user.id
         expect(response).to have_http_status(:ok)
-        expect(res["status"]).to eq params[:article][:status] # 追加分
+        expect(res["status"]).to eq params[:article][:status]
       end
     end
 
@@ -101,7 +100,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let(:params) { FactoryBot.attributes_for(:article) }
 
       it "記事のデータが作成できない" do
-        expect { subject }.to raise_error(ActionController::ParameterMissing) # raiseなのに注意！　うまく値を渡せないことを期待している
+        expect { subject }.to raise_error(ActionController::ParameterMissing)
       end
     end
   end
@@ -111,7 +110,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     let(:current_user) { create(:user) }
     let(:headers) { current_user.create_new_auth_token }
-    context "ログインユーザーが自身の投稿を更新しようとした時" do # 下書き・更新ともにstatusが元々から、送った値に更新されていればいいので。
+    context "ログインユーザーが自身の投稿を更新しようとした時" do
       let(:article_id) { article.id }
       let(:article) { create(:article, user: current_user) }
 
@@ -120,8 +119,8 @@ RSpec.describe "Api::V1::Articles", type: :request do
       end
 
       it "投稿内容を更新できる" do
-        expect { subject }.to change { Article.find(article_id).title }.from(article.title).to(params[:article][:title]) # Article.find(article_id)→article.reloadに書き換えられる
-        change { Article.find(article_id).status }.from(article.status).to(params[:article][:status]) & # 追加分
+        expect { subject }.to change { Article.find(article_id).title }.from(article.title).to(params[:article][:title])
+        change { Article.find(article_id).status }.from(article.status).to(params[:article][:status]) &
           not_change { Article.find(article_id).body } &
           not_change { Article.find(article_id).user_id } &
           not_change { Article.find(article_id).created_at }
@@ -154,7 +153,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let!(:article) { create(:article, user: current_user) }
 
       it "（下書き用の）投稿内容を削除できる" do
-        expect { subject }.to change { Article.where(status: "draft").count }.by(-1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+        expect { subject }.to change { Article.where(status: "draft").count }.by(-1)
       end
     end
 
@@ -163,7 +162,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let!(:article) { create(:article, user: current_user, status: "published") }
 
       it "（公開用の）投稿内容を削除できる" do
-        expect { subject }.to change { Article.where(status: "published").count }.by(-1) # サブジェクトにどんな変化があったのか⇨article数が一つ増える
+        expect { subject }.to change { Article.where(status: "published").count }.by(-1)
       end
     end
 

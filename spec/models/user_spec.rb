@@ -29,7 +29,6 @@ RSpec.describe User, type: :model do
   context "name を指定しているとき" do
     it "ユーザーが作られる" do
       user = FactoryBot.build(:user)
-      # expect(user.valid?).to eq true
       expect(user).to be_valid
     end
   end
@@ -37,9 +36,7 @@ RSpec.describe User, type: :model do
   context "name を指定していないとき" do
     it "ユーザー作成に失敗する" do
       user = FactoryBot.build(:user, name: nil)
-      # expect(user.invalid?).to eq true
       expect(user).to be_invalid
-      # binding.pry
       expect(user.errors.details[:name][0][:error]).to eq :blank
     end
   end
@@ -50,7 +47,6 @@ RSpec.describe User, type: :model do
     it "ユーザー作成に失敗する" do
       user = FactoryBot.build(:user, name: "aaa")
       expect(user).to be_invalid
-      # binding.pry
       expect(user.errors.details[:name][0][:error]).to eq :taken
     end
   end

@@ -45,19 +45,17 @@ RSpec.describe Article, type: :model do
     end
   end
 
-  context "bodyとtitele を指定しているとき" do # 下書き用で保存できるか？
+  context "bodyとtitele を指定しているとき" do
     it "下書き用で保存できる" do
       article = FactoryBot.create(:article)
       expect(article).to be_valid
-      # binding.pry
       expect(article.status).to eq "draft"
     end
   end
 
-  context "bodyとtitele を指定しているとき" do # 公開用で保存できるか？
+  context "bodyとtitele を指定しているとき" do
     it "公開用で保存できる" do
       article = FactoryBot.create(:article, status: "published")
-      # binding.pry
       expect(article).to be_valid
       expect(article.status).to eq "published"
     end

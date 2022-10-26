@@ -37,13 +37,6 @@ RSpec.describe Comment, type: :model do
     end
   end
 
-  # context "bodyが70文字以下の時のとき" do
-  #   it "コメントの作成に成功する" do
-  #     comment = FactoryBot.create(:comment, body: "a"*70)
-  #     expect(comment).to be_valid
-  #   end
-  # end
-
   context "bodyが70文字以上の時のとき" do
     it "コメントの作成に失敗する" do
       comment = FactoryBot.build(:comment, body: "a" * 71)
