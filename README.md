@@ -1,24 +1,41 @@
 # README
+## タイトル
+### Wonderful Editor
+『Qiita風記事作成アプリ』 
+<img width="1465" alt="top-page" src="https://user-images.githubusercontent.com/110586988/198496673-79c72de8-b87a-42af-a77c-0d5c0c958614.png">
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 概要
+記事を記録、共有するためのアプリ
 
-Things you may want to cover:
+## URL・テストアカウント
+- ポートフォリオURL : https://wonderful-editor-ci6r.onrender.com/
+- アカウント : test
+- email : test@example.com
+- password : testtest
 
-* Ruby version
+## 制作意図
+「学習スキルのアウトプット」を意識して制作しました。 学習はどうしてもインプットから始まりますが、インプットだけでは定着しにくいのが現状です。そこで学習内容のアウトプットの為に、このアプリを作成いたしました。また、私のプログラミングスクールでは「自走力」に重きを置いて学習していました。今後のプログラマー人生で幾度となく訪れる「初めての知識」「分からない事」、このような場面に直面した時、いかにして調べ、時には質問をして解決を目指すか、その実践的なことをこのアプリケーションの作成を通して学びました。もちろん指示書はありますが、半分以上は内容は講義として学習したものではなく各々が調べて取り組んでいきます。質問する際は必ず自身での仮説・検証を繰り返し、その上で質問をすることで、伝えたい事を言語化し質問された側が返答しやすいような質問の仕方も学ぶことができました。
 
-* System dependencies
 
-* Configuration
 
-* Database creation
+## 動作環境
+- Ruby: 2.7.2
+- Rails: 6.0.3.7
+- Node 14.20.0
+- Vue.js: 2.6.11
+- DB: PostgreSQL
 
-* Database initialization
+## 機能一覧
+- 記事一覧機能(トップページ)
+- マイページ（自分が書いた記事の一覧）
+- ユーザー登録(サインイン/サインアウト)
+- 記事CRUD (一覧以外)
+- 記事の下書き機能
 
-* How to run the test suite
+## テスト
+- Rspce
+  - 単体テスト（Model）
+  - 結合テスト（Request）
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## ER図
+<img width="716" alt="blueprint" src="https://user-images.githubusercontent.com/110586988/198498830-ddb67a9d-9f28-4775-8c30-23041966a113.png">
